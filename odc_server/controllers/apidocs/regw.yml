@@ -1,0 +1,15 @@
+Register a new wallet
+---
+parameters:
+  - name: sok
+    description: "sok RSA-Key"
+    in: formData
+    type: string
+    required: true
+responses:
+  200:
+    description: wid of a new wallet
+    schema:
+      type: string
+  400:
+    description: "When no sok is provided, provided key could not be parsed or sok is occupied"
