@@ -1,0 +1,28 @@
+Issue banknotes to a specific wallet, in a real project this should not be exposed
+---
+parameters:
+  - name: wid
+    description: "wid of a target wallet"
+    in: formData
+    type: string
+    required: true
+  - name: amount
+    description: "Amount of money to add (Will be split into banknote amounts using div mod)"
+    in: formData
+    type: integer
+    minimum: 1
+    required: true
+responses:
+  200:
+    description: "List of newly issued banknotes"
+    schema:
+      example: { "id": 200,"issued_banknotes": [ { "amount": 100,"code": 643,"signature": "8a0b7f61ac949689948b28743cb6d6b824adb8637d787bf36f832fde537fa66836fa9f60359d87970a020f50b21e1641feb008593bbcef3f7f3315cb38209cd8","time": "20210629180238729839" },{ "amount": 100,"code": 643,"signature": "8a0b7f61ac949689948b28743cb6d6b824adb8637d787bf36f832fde537fa66836fa9f60359d87970a020f50b21e1641feb008593bbcef3f7f3315cb38209cd8","time": "20210629180238729839" },{ "amount": 50,"code": 643,"signature": "602e210cadf376356741b504cffbc678f1a3712793ecd2b885df3aa2b3da5a521ab11faa49cfc6d0c8ab2d3752ac09cd3dabcb0eb1cd8c6694461da33f10246d","time": "20210629180238729839" },{ "amount": 1,"code": 643,"signature": "1ca84412b2f220e6d3afe12d72d36c4416a4a5b174bdf50c43ab6bbf95eab1dd4c70d04c41413431327bbf3b13639b2bd748bd199838f5bdeac421bdd43a87cc","time": "20210629180238729839" } ] }
+      type: array
+      items:
+        type: array
+        items:
+          type: string
+  400:
+    description: "When no wid is provided or provided wid could not be verified"
+    schema:
+      example: { "id": 400,"message": "wid should be 24 char hex string" }
