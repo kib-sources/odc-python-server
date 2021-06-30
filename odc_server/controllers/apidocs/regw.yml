@@ -10,6 +10,9 @@ responses:
   200:
     description: wid of a new wallet
     schema:
+      example: { "id": 200,"wid": "60db3db637bbfc9c371f7f93" }
       type: string
   400:
     description: "When no sok is provided, provided key could not be parsed or sok is occupied"
+    schema:
+      example: { "id": 400,"message": "Failed to parse sok" }
