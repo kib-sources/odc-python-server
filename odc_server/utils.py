@@ -2,8 +2,8 @@ import random
 import string
 
 
-def is_hex_24(a: str) -> bool:
-    if len(a) != 24:
+def is_hex(a: str, l: int) -> bool:
+    if len(a) != l:
         return False
     try:
         int(a, 16)
