@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flasgger import Swagger
 from pymongo import MongoClient
@@ -17,8 +19,12 @@ W2NMULan0+6Yq10CpQIeLhj952QRQscfrqehkZg2TwayKUkod/SK3SmHC2NnAiI+
 g4WPPFxHv/30FacTi1BTf2HD32FQ3KtKdu+hi6v7JeLq
 -----END RSA PRIVATE KEY-----"""
 
+mongo_uri = os.getenv("mongo_uri")
+if mongo_uri is None:
+    mongo_uri = "mongodb://127.0.0.1:27017"
+
 app = Flask(__name__)
 swag = Swagger(app)
-db = MongoClient().odc
+db = MongoClient(mongo_uri).odc
 
 from . import controllers
