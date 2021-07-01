@@ -15,3 +15,15 @@ def sign_with_private_key(item, key):
     data = bytes(bytearray.fromhex(item))
     signed_data = rsa.sign(data, private_key, "SHA-256").hex()
     return signed_data
+
+
+def verify_with_public_key(origin, signature, key):
+    origin_bytes = bytes(bytearray.fromhex(origin))
+    signature_bytes = bytes(bytearray.fromhex(signature))
+    public_key = rsa.PublicKey.load_pkcs1(key.encode())
+
+    try:
+        rsa.verify(origin_bytes, signature_bytes, public_key)
+    except rsa.VerificationError:
+        return False
+    return True
