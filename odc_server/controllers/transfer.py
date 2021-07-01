@@ -40,6 +40,9 @@ def receive_banknote():
     if not verify_with_public_key(sok_hash, sok_signature, bok):
         return {"code": 401, "message": "Invalid sok signature"}, 401
 
+    if not is_hex(wallet_signature, 128):
+        return {"code": 400, "message": "wallet_signature should be 64 char hex string"}, 400
+
     transaction_hash = hash_items([uuid, otok, bnid])
     if not verify_with_public_key(transaction_hash, wallet_signature, sok):
         return {"code": 401, "message": "Invalid wallet signature"}, 401
