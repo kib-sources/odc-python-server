@@ -13,7 +13,7 @@ from odc_server.utils import is_hex, random_numerical_string
 @app.route("/bok", methods=["GET"])
 @swag_from("apidocs/bok.yml")
 def fetch_bok():
-    return {"id": 200, "bok": bok}
+    return {"code": 200, "bok": bok}
 
 
 @app.route("/regw", methods=["POST"])
@@ -24,14 +24,14 @@ def register_wallet():
     try:
         rsa.PublicKey.load_pkcs1(sok.encode())
     except:
-        return {"id": 400, "message": "Failed to parse sok"}, 400
+        return {"code": 400, "message": "Failed to parse sok"}, 400
 
     if db.wallets.find_one({"sok": sok}) is not None:
-        return {"id": 400, "message": "sok already registered"}, 400
+        return {"code": 400, "message": "sok already registered"}, 400
 
     signed_sok = sign_with_private_key(hash_items([sok]), bpk)
     wid = db.wallets.insert_one({"sok": sok, "sok_signature": signed_sok}).inserted_id
-    return {"id": 200, "wid": str(wid), "sok_signature": signed_sok}
+    return {"code": 200, "wid": str(wid), "sok_signature": signed_sok}
 
 
 @app.route("/issb", methods=["POST"])
@@ -41,14 +41,14 @@ def issue_banknotes():
     amount = request.form["amount"]
 
     if (not amount.isnumeric()) or int(amount) < 1:
-        return {"id": 400, "message": "Amount should be a non-zero integer"}, 400
+        return {"code": 400, "message": "Amount should be a non-zero integer"}, 400
 
     if not is_hex(wid, 24):
-        return {"id": 400, "message": "wid should be 24 char hex string"}, 400
+        return {"code": 400, "message": "wid should be 24 char hex string"}, 400
 
     wallet = db.wallets.find_one({"_id": ObjectId(wid)})
     if wallet is None:
-        return {"id": 400, "message": "wid not registered"}, 400
+        return {"code": 400, "message": "wid not registered"}, 400
 
     amount = int(amount)
     give_amounts = dict()
@@ -79,4 +79,4 @@ def issue_banknotes():
 
             given_banknotes.append(banknote)
 
-    return {"id": 200, "issued_banknotes": given_banknotes}
+    return {"code": 200, "issued_banknotes": given_banknotes}

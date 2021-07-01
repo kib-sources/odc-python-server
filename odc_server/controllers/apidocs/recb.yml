@@ -35,9 +35,9 @@ responses:
   200:
     description: "wid of a new wallet and a signed sok"
     schema:
-      example: { "id": 200,"magic": "7593555053053793","transaction_hash": "8bea55e7d749541a432a633bd6ab1df0bb9b89155279c86d21471d2b5300100f","transaction_hash_signed": "553115de00de5ca6aa0f7a0f02c64061499dbc7b2bbc42931dd03f394a5c62eab38bfe2e2c4da5ac27dc7a35619b9cb04f01fda0fc244b24bf4bcad89c7e50f4" }
+      example: { "code": 200,"magic": "7593555053053793","transaction_hash": "8bea55e7d749541a432a633bd6ab1df0bb9b89155279c86d21471d2b5300100f","transaction_hash_signed": "553115de00de5ca6aa0f7a0f02c64061499dbc7b2bbc42931dd03f394a5c62eab38bfe2e2c4da5ac27dc7a35619b9cb04f01fda0fc244b24bf4bcad89c7e50f4" }
       type: string
   400:
     description: "When one of the required parameters was not provided or was incorrect"
     schema:
-      example: { "id": 401,"message": "Invalid sok signature" }
+      example: { "code": 401,"message": "Invalid sok signature" }
