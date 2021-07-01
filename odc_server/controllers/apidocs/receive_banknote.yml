@@ -40,4 +40,12 @@ responses:
   400:
     description: "When one of the required parameters was not provided or was incorrect"
     schema:
+      example: {"code": 400, "message": "wallet_signature should be 64 char hex string"}
+  401:
+    description: "When one of signatures could not be verified"
+    schema:
       example: { "code": 401,"message": "Invalid sok signature" }
+  403:
+    description: "When bnid was already received"
+    schema:
+      example: {"code": 403, "message": "This banknote is already in circulation"}
