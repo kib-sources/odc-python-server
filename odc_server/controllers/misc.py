@@ -70,6 +70,7 @@ def issue_banknotes():
 
             inserted_id = db.banknotes.insert_one(dict(banknote)).inserted_id
 
+            banknote["bnid"] = str(inserted_id)
             banknote_hash = hash_items(banknote.values())
             banknote["signature"] = sign_with_private_key(banknote_hash, bpk)
 
