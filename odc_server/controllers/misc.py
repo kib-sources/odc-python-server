@@ -7,6 +7,7 @@ from flask import request
 
 from odc_server import app, db, bpk, bok
 from odc_server.crypto import hash_items, sign_with_private_key
+from odc_server.utils import is_hex_24
 
 
 @app.route("/bok", methods=["GET"])
@@ -42,12 +43,7 @@ def issue_banknotes():
     if (not amount.isnumeric()) or int(amount) < 1:
         return {"id": 400, "message": "Amount should be a non-zero integer"}, 400
 
-    if len(wid) != 24:
-        return {"id": 400, "message": "wid should be 24 char hex string"}, 400
-
-    try:
-        int(wid, 16)
-    except:
+    if not is_hex_24(wid):
         return {"id": 400, "message": "wid should be 24 char hex string"}, 400
 
     wallet = db.wallets.find_one({"_id": ObjectId(wid)})
