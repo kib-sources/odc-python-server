@@ -25,6 +25,10 @@ def receive_banknote():
     banknote = db.banknotes.find_one({"_id": ObjectId(bnid)})
     if banknote is None:
         return {"code": 400, "message": "bnid does not exist"}, 400
+    if len(banknote["chains"]) > 0:
+        return {"code": 403, "message": "This banknote is already in circulation"}, 403
+    if any([block["uuid"] == uuid for block in banknote["chains"]]):
+        return {"code": 400, "message": "uuid is already in use"}, 400
 
     try:
         rsa.PublicKey.load_pkcs1(otok.encode())
