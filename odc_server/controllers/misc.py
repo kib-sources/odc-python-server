@@ -5,8 +5,14 @@ from bson import ObjectId
 from flasgger import swag_from
 from flask import request
 
-from odc_server import app, db, bpk
+from odc_server import app, db, bpk, bok
 from odc_server.crypto import hash_items, sign_with_private_key
+
+
+@app.route("/bok", methods=["GET"])
+@swag_from("apidocs/bok.yml")
+def fetch_bok():
+    return {"id": 200, "bok": bok}
 
 
 @app.route("/regw", methods=["POST"])

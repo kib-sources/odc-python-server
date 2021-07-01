@@ -1,0 +1,8 @@
+Request bok
+---
+responses:
+  200:
+    description: bok
+    schema:
+      example: { "bok": "-----BEGIN RSA PUBLIC KEY-----\nMEgCQQCZScdB8AFwcrZDOLVsBT7m+KyuARWixZCstV99oOMYD318o0rhAqSYk/3Q\nnxV31GMYcJv7qABEqnowEkTGDh1TAgMBAAE=\n-----END RSA PUBLIC KEY-----","id": 200 }
+      type: string
