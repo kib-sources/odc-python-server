@@ -7,7 +7,7 @@ from flask import request
 
 from odc_server import app, db, bpk, bok
 from odc_server.crypto import hash_items, sign_with_private_key
-from odc_server.utils import is_hex
+from odc_server.utils import is_hex, random_numerical_string
 
 
 @app.route("/bok", methods=["GET"])
@@ -74,7 +74,8 @@ def issue_banknotes():
             banknote_hash = hash_items(banknote.values())
             banknote["signature"] = sign_with_private_key(banknote_hash, bpk)
 
-            db.banknotes.update_one({"_id": inserted_id}, {"$set": {"signature": banknote["signature"]}})
+            db.banknotes.update_one({"_id": inserted_id},
+                                    {"$set": {"signature": banknote["signature"], "chains": list()}})
 
             given_banknotes.append(banknote)
 
