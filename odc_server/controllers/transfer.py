@@ -8,8 +8,8 @@ from odc_server.crypto import hash_items, verify_with_public_key, sign_with_priv
 from odc_server.utils import random_numerical_string, is_hex
 
 
-@app.route("/recb", methods=["POST"])
-@swag_from("apidocs/recb.yml")
+@app.route("/receive-banknote", methods=["POST"])
+@swag_from("apidocs/receive_banknote.yml")
 def receive_banknote():
     bnid = request.form["bnid"]
     uuid = request.form["uuid"]

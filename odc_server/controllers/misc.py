@@ -16,8 +16,8 @@ def fetch_bok():
     return {"code": 200, "bok": bok}
 
 
-@app.route("/regw", methods=["POST"])
-@swag_from("apidocs/regw.yml")
+@app.route("/register-wallet", methods=["POST"])
+@swag_from("apidocs/register_wallet.yml")
 def register_wallet():
     sok = request.form["sok"]
 
@@ -34,8 +34,8 @@ def register_wallet():
     return {"code": 200, "wid": str(wid), "sok_signature": signed_sok}
 
 
-@app.route("/issb", methods=["POST"])
-@swag_from("apidocs/issb.yml")
+@app.route("/issue-banknotes", methods=["POST"])
+@swag_from("apidocs/issue_banknotes.yml")
 def issue_banknotes():
     wid = request.form["wid"]
     amount = request.form["amount"]
