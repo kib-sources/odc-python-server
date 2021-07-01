@@ -3,12 +3,12 @@ Issue banknotes to a specific wallet, in a real project this should not be expos
 parameters:
   - name: wid
     description: "wid of a target wallet"
-    in: formData
+    in: json
     type: string
     required: true
   - name: amount
     description: "Amount of money to add (Will be split into banknote amounts using div mod)"
-    in: formData
+    in: json
     type: integer
     minimum: 1
     required: true

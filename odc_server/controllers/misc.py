@@ -7,7 +7,7 @@ from flask import request
 
 from odc_server import app, db, bpk, bok
 from odc_server.crypto import hash_items, sign_with_private_key
-from odc_server.utils import is_hex, random_numerical_string
+from odc_server.utils import is_hex
 
 
 @app.route("/bok", methods=["GET"])
@@ -19,7 +19,8 @@ def fetch_bok():
 @app.route("/register-wallet", methods=["POST"])
 @swag_from("apidocs/register_wallet.yml")
 def register_wallet():
-    sok = request.form["sok"]
+    request_json = request.get_json()
+    sok = request_json["sok"]
 
     try:
         rsa.PublicKey.load_pkcs1(sok.encode())
@@ -37,8 +38,9 @@ def register_wallet():
 @app.route("/issue-banknotes", methods=["POST"])
 @swag_from("apidocs/issue_banknotes.yml")
 def issue_banknotes():
-    wid = request.form["wid"]
-    amount = request.form["amount"]
+    request_json = request.get_json()
+    wid = request_json["wid"]
+    amount = request_json["amount"]
 
     if (not amount.isnumeric()) or int(amount) < 1:
         return {"code": 400, "message": "Amount should be a non-zero integer"}, 400

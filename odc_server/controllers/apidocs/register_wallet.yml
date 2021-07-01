@@ -3,7 +3,7 @@ Register a new wallet
 parameters:
   - name: sok
     description: "sok RSA-Key"
-    in: formData
+    in: json
     type: string
     required: true
 responses:

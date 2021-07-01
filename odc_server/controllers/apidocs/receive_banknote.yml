@@ -3,32 +3,32 @@ Receive issued banknote (Alg. 1)
 parameters:
   - name: uuid
     description: "Unique ID"
-    in: formData
+    in: json
     type: string
     required: true
   - name: bnid
     description: "Banknote ID"
-    in: formData
+    in: json
     type: string
     required: true
   - name: otok
     description: "otok RSA-Key"
-    in: formData
+    in: json
     type: string
     required: true
   - name: wallet_signature
     description: "Transaction wallet signature, signed with spk"
-    in: formData
+    in: json
     type: string
     required: true
   - name: sok
     description: "sok RSA-Key"
-    in: formData
+    in: json
     type: string
     required: true
   - name: sok_signature
     description: "sok RSA-Key signature signed by bank"
-    in: formData
+    in: json
     type: string
     required: true
 responses:

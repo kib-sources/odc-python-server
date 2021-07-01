@@ -11,12 +11,13 @@ from odc_server.utils import random_numerical_string, is_hex
 @app.route("/receive-banknote", methods=["POST"])
 @swag_from("apidocs/receive_banknote.yml")
 def receive_banknote():
-    bnid = request.form["bnid"]
-    uuid = request.form["uuid"]
-    otok = request.form["otok"]
-    wallet_signature = request.form["wallet_signature"]
-    sok = request.form["sok"]
-    sok_signature = request.form["sok_signature"]
+    request_json = request.get_json()
+    bnid = request_json["bnid"]
+    uuid = request_json["uuid"]
+    otok = request_json["otok"]
+    wallet_signature = request_json["wallet_signature"]
+    sok = request_json["sok"]
+    sok_signature = request_json["sok_signature"]
 
     if not is_hex(bnid, 24):
         return {"code": 400, "message": "bnid should be 24 char hex string"}, 400
