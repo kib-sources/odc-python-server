@@ -42,7 +42,7 @@ def issue_banknotes():
     wid = request_json["wid"]
     amount = request_json["amount"]
 
-    if (not amount.isnumeric()) or int(amount) < 1:
+    if type(amount) != int or amount < 1:
         return {"code": 400, "message": "Amount should be a non-zero integer"}, 400
 
     if not is_hex(wid, 24):
