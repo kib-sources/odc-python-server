@@ -8,9 +8,9 @@ parameters:
     required: true
 responses:
   200:
-    description: wid of a new wallet
+    description: wid of a new wallet and a signed sok
     schema:
-      example: { "id": 200,"wid": "60db3db637bbfc9c371f7f93" }
+      example: { "id": 200,"sok_signature": "5803296e1ef3cfea5aea508745e851554bb5f3b067a565f64b643b44e5fc38d23b6c21c4d0bae4d5c1175447b02a35c53e4c5babe723633c068fa39d5408b012","wid": "60ddb20b091b64b55ecba305" }
       type: string
   400:
     description: "When no sok is provided, provided key could not be parsed or sok is occupied"

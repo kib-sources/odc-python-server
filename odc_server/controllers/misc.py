@@ -22,8 +22,9 @@ def register_wallet():
     if db.wallets.find_one({"sok": sok}) is not None:
         return {"id": 400, "message": "sok already registered"}, 400
 
-    wid = db.wallets.insert_one({"sok": sok}).inserted_id
-    return {"id": 200, "wid": str(wid)}
+    signed_sok = sign_with_private_key(hash_items([sok]), bpk)
+    wid = db.wallets.insert_one({"sok": sok, "sok_signature": signed_sok}).inserted_id
+    return {"id": 200, "wid": str(wid), "sok_signature": signed_sok}
 
 
 @app.route("/issb", methods=["POST"])
