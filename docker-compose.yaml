@@ -17,7 +17,7 @@ services:
     ports:
       - "80:5000"
     volumes:
-    # bpk and bok have to be provided in ./keys as bank_key and bank_key.pub
+      # bpk and bok have to be provided in ./keys as bank_key and bank_key.pub
       - ./keys:/odc/keys
     depends_on:
       - mongodb
