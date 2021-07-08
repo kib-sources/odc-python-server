@@ -25,3 +25,5 @@ services:
     image: mongo:latest
     container_name: mongodb
     restart: unless-stopped
+    logging:
+      driver: none
