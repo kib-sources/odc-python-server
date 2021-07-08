@@ -20,6 +20,9 @@ def fetch_bok():
 @swag_from("apidocs/register_wallet.yml")
 def register_wallet():
     request_json = request.get_json()
+    if request_json is None:
+        return {"code": 400, "message": "Could not parse request body (must be raw json)"}, 400
+
     sok = request_json["sok"]
 
     try:
@@ -39,6 +42,9 @@ def register_wallet():
 @swag_from("apidocs/issue_banknotes.yml")
 def issue_banknotes():
     request_json = request.get_json()
+    if request_json is None:
+        return {"code": 400, "message": "Could not parse request body (must be raw json)"}, 400
+
     wid = request_json["wid"]
     amount = request_json["amount"]
 

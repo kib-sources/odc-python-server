@@ -12,6 +12,9 @@ from odc_server.utils import random_numerical_string, is_hex
 @swag_from("apidocs/receive_banknote.yml")
 def receive_banknote():
     request_json = request.get_json()
+    if request_json is None:
+        return {"code": 400, "message": "Could not parse request body (must be raw json)"}, 400
+
     bnid = request_json["bnid"]
     uuid = request_json["uuid"]
     otok = request_json["otok"]
