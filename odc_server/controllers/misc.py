@@ -58,14 +58,29 @@ def issue_banknotes():
 
     amount = int(amount)
     give_amounts = dict()
-    banknote_amounts = [5000, 2000, 1000, 500, 100, 50, 10, 5, 2, 1]
-    for banknote_amount in banknote_amounts:
-        banknote_count = amount // banknote_amount
-        amount = amount % banknote_amount
-        if banknote_count > 0:
-            give_amounts[banknote_amount] = banknote_count
+    # banknote is defined as [amount, batch size]
+    banknote_amounts = [[1, 30], [2, 30],
+                        [5, 10], [10, 10], [50, 10], [100, 10], [500, 10], [1000, 10], [2000, 10], [5000, 10]]
+    is_forward = True
+    while True:
+        for banknote_amount in banknote_amounts:
+            count = amount // banknote_amount[0]
+            if count > banknote_amount[1]:
+                count = banknote_amount[1]
+            if count == 0:
+                continue
+            if banknote_amount[0] not in give_amounts:
+                give_amounts[banknote_amount[0]] = count
+            else:
+                give_amounts[banknote_amount[0]] += count
+            amount -= count * banknote_amount[0]
+            if amount == 0:
+                break
         if amount == 0:
             break
+        if is_forward:
+            is_forward = False
+            banknote_amounts = list(reversed(banknote_amounts))
 
     current_time = current_epoch_time()
     given_banknotes = list()
