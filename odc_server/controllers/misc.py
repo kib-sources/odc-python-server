@@ -31,7 +31,7 @@ def register_wallet():
         return {"code": 400, "message": "Failed to parse sok"}, 400
 
     if db.wallets.find_one({"sok": sok}) is not None:
-        return {"code": 400, "message": "sok already registered"}, 400
+        return {"code": 409, "message": "sok already registered"}, 409
 
     signed_sok = sign_with_private_key(hash_items([sok]), bpk)
     wid = db.wallets.insert_one({"sok": sok, "sok_signature": signed_sok}).inserted_id
