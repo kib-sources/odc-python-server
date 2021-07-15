@@ -19,3 +19,8 @@ def random_numerical_string(l):
 
 def current_epoch_time():
     return int(time.time())
+
+
+def verify_time_is_near_current(t, epsilon):
+    diff = current_epoch_time() - t
+    return 0 <= diff <= epsilon
