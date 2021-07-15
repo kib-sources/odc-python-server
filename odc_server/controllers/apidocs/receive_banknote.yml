@@ -1,46 +1,75 @@
 Receive issued banknote (Alg. 1)
 ---
 parameters:
-  - name: uuid
-    description: "Unique ID"
-    in: json
-    type: string
+  - in: body
+    name: body
+    description: "application/json request body"
     required: true
-  - name: bnid
-    description: "Banknote ID"
-    in: json
-    type: string
-    required: true
-  - name: otok
-    description: "otok RSA-Key"
-    in: json
-    type: string
-    required: true
-  - name: wallet_signature
-    description: "Transaction wallet signature, signed with spk"
-    in: json
-    type: string
-    required: true
-  - name: sok
-    description: "sok RSA-Key"
-    in: json
-    type: string
-    required: true
-  - name: sok_signature
-    description: "sok RSA-Key signature signed by bank"
-    in: json
-    type: string
-    required: true
+    schema:
+      type: object
+      required:
+        - wid
+        - uuid
+        - bnid
+        - time
+        - otok
+        - otok_signature
+        - wallet_signature
+      properties:
+        wid:
+          type: string
+          example: "60f04db73b4edf034b75ecd0"
+          description: "Wallet ID (24 char hex string)"
+        uuid:
+          type: string
+          example: "TEST_UUID"
+          description: "Unique ID"
+        bnid:
+          type: string
+          example: "60f0759cc54f41eb6c0870f6"
+          description: "Banknote ID (24 char hex string)"
+        time:
+          type: int
+          example: "1626374954"
+          description: "Transaction time, can be at most 60 seconds old on arrival (Unix Epoch time)"
+        otok:
+          type: string
+          example: "-----BEGIN RSA PUBLIC KEY-----\nMEgCQQC5ohEmk4zwb6YdoBrWjkCr/1ZLc729AYc7QC8sabaSLiujiRcd6VwL7drxQJymxN/gHrvHYDU1xxtiuYCk7nF7AgMBAAE=\n-----END RSA PUBLIC KEY-----"
+          description: "otok RSA-Key"
+        otok_signature:
+          type: string
+          example: "3112788d0d6897e0b58ee937d682c0ad397ca812545e5e8e3db7d3b76b7f49c7e5bf8a9768bfd24c877ed36e753781700b56b17d604ae21d9cfcc151f2a3b3e7"
+          description: "otok hash signed with spk (128 char hex string)"
+        transaction_signature:
+          type: string
+          example: "1ae1f4f6e657baa416bd36c89da1123d5215a8f05aadfbda014db79004c6a7bb7218caaf6d6bba3aa9ded0447360cf58817d8dfd76f6ca45f898389e9610e96d"
+          description: "Hash of all transaction params (uuid, otok, bnid, time) signed with spk (128 char hex string)"
 responses:
   200:
-    description: "wid of a new wallet and a signed sok"
+    description: "Initial block details"
     schema:
-      example: { "code": 200,"magic": "7593555053053793","transaction_hash": "8bea55e7d749541a432a633bd6ab1df0bb9b89155279c86d21471d2b5300100f","transaction_hash_signed": "553115de00de5ca6aa0f7a0f02c64061499dbc7b2bbc42931dd03f394a5c62eab38bfe2e2c4da5ac27dc7a35619b9cb04f01fda0fc244b24bf4bcad89c7e50f4" }
-      type: string
+      example: { "code": 200,"magic": "8982716428722891","time": 1626375582,"transaction_hash": "5c3e24fb58e8f0e97c37ab900225d9ebce6b9837f3ad833046d3fd1e8ab51c8d","transaction_hash_signed": "7f845be121e08bf8ec960ca1ee515e9bbbfe3836a569e8d40f8ddeb2575e2cb3a9c9617e260f3fba47a3b864f27fb8d329f407a74790c981b70ce28a8d6fc0d1" }
+      type: object
+      properties:
+        code:
+          type: int
+          description: "Response HTTP code"
+        magic:
+          type: string
+          description: "Random numeric string"
+        time:
+          type: int
+          description: "Transaction time (Unix Epoch time)"
+        transaction_hash:
+          type: string
+          description: "Hash of all transaction params (uuid, otok, bnid, time) (64 char hex string)"
+        transaction_hash_signed:
+          type: string
+          description: "Hash of all transaction params (uuid, otok, bnid, time) signed with bpk (128 char hex string)"
   400:
     description: "When one of the required parameters was not provided or was incorrect"
     schema:
-      example: {"code": 400, "message": "wallet_signature should be 64 char hex string"}
+      example: { "code": 400, "message": "wallet_signature should be 128 char hex string" }
   401:
     description: "When one of signatures could not be verified"
     schema:
@@ -48,4 +77,4 @@ responses:
   403:
     description: "When bnid was already received"
     schema:
-      example: {"code": 403, "message": "This banknote is already in circulation"}
+      example: { "code": 403, "message": "This banknote is already in circulation" }
