@@ -1,18 +1,40 @@
 Register a new wallet
 ---
 parameters:
-  - name: sok
-    description: "sok RSA-Key"
-    in: json
-    type: string
+  - in: body
+    name: body
+    description: "application/json request body"
     required: true
+    schema:
+      type: object
+      required:
+        - sok
+      properties:
+        sok:
+          type: string
+          example: "-----BEGIN RSA PUBLIC KEY-----\nMEgCQQC5ohEmk4zwb6YdoBrWjkCr/jZLc729AYc7QC8sabaSLiujiRcd6VwL7drxQJymxN/gHrvHYDU1xxtiuYCk7nF7AgMBAAE=\n-----END RSA PUBLIC KEY-----"
+          description: "sok RSA-Key"
 responses:
   200:
-    description: wid of a new wallet and a signed sok
+    description: "wid of a new wallet and a signed sok"
     schema:
       example: { "code": 200,"sok_signature": "5803296e1ef3cfea5aea508745e851554bb5f3b067a565f64b643b44e5fc38d23b6c21c4d0bae4d5c1175447b02a35c53e4c5babe723633c068fa39d5408b012","wid": "60ddb20b091b64b55ecba305" }
-      type: string
+      type: object
+      properties:
+        code:
+          type: int
+          description: "Response HTTP code"
+        sok_signature:
+          type: string
+          description: "sok hash signed with bpk (128 char hex string)"
+        wid:
+          type: string
+          description: "ID of a new wallet (24 char hex string)"
   400:
     description: "When no sok is provided, provided key could not be parsed or sok is occupied"
     schema:
       example: { "code": 400,"message": "Failed to parse sok" }
+  409:
+    description: "When provided sok is already in use"
+    schema:
+      example: { "code": 409,"message": "sok already registered" }
