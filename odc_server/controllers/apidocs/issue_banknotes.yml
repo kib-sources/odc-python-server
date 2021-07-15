@@ -1,27 +1,55 @@
 Issue banknotes to a specific wallet, in a real project this should not be exposed
 ---
 parameters:
-  - name: wid
-    description: "wid of a target wallet"
-    in: json
-    type: string
+  - in: body
+    name: body
+    description: "application/json request body"
     required: true
-  - name: amount
-    description: "Amount of money to add (Will be split into banknote amounts using div mod)"
-    in: json
-    type: integer
-    minimum: 1
-    required: true
+    schema:
+      type: object
+      required:
+        - wid
+        - amount
+      properties:
+        wid:
+          type: string
+          example: "60f04db73b4edf034b75ecd0"
+          description: "Wallet ID (24 char hex string)"
+        amount:
+          type: int
+          example: 251
+          description: "Total amount of money for all newly issued banknotes (>0)"
 responses:
   200:
     description: "List of newly issued banknotes"
     schema:
       example: { "code": 200,"issued_banknotes": [ { "amount": 100,"bnid": "60f04ded3b4edf034b75ecd1","code": 643,"signature": "69f7670f536c3a76e035955060b55a1b838c9d329c180bf58f1e0624765d4cf7cfc968918bea2d81ebf57af3c888b3dd78d4372d1852c73d109ada9f821d6a92","time": 1626361325 },{ "amount": 100,"bnid": "60f04ded3b4edf034b75ecd2","code": 643,"signature": "2dbdb726e478e77bfd0f5e77b5a5e92804404cfc344c69fb17b887da875b436302de72f380332b9346efa1c4de35741d37899ccbbcaed747ed4326c790cf19e9","time": 1626361325 },{ "amount": 50,"bnid": "60f04ded3b4edf034b75ecd3","code": 643,"signature": "62de83ebbd88e78ad939f371fc7e6ad587d64f78c37d20c21ca64f502eaacd411527954c26c9e8d68c55e96d0ff3166da89d7879b642147c57d78a59a5c17688","time": 1626361325 },{ "amount": 1,"bnid": "60f04ded3b4edf034b75ecd4","code": 643,"signature": "1503a466668ab39f1df31dbd9a8159c395540dadb8d41dce917bf422967d770680f0378dadde9828de7872fd22c5025d8d46fcbe836bfd2e343c43ce109832d0","time": 1626361325 } ] }
-      type: array
-      items:
-        type: array
-        items:
-          type: string
+      type: object
+      properties:
+        code:
+          type: int
+          description: "Response HTTP code"
+        issued_banknotes:
+          type: array
+          description: "List of all issued banknotes"
+          items:
+            type: object
+            properties:
+              amount:
+                type: int
+                description: "Banknote denomination"
+              bnid:
+                type: string
+                description: "Banknote ID (24 char hex string)"
+              code:
+                type: int
+                description: "Currency code (ISO 4217 - Number)"
+              signature:
+                type: string
+                description: "Hash of all banknote properties, signed with bpk (128 char hex string)"
+              time:
+                type: int
+                description: "Issue time (Unix Epoch time)"
   400:
     description: "When no wid is provided or provided wid could not be verified"
     schema:
