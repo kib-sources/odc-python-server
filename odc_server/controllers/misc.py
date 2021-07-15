@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import rsa
 from bson import ObjectId
 from flasgger import swag_from
@@ -7,7 +5,7 @@ from flask import request
 
 from odc_server import app, db, bpk, bok
 from odc_server.crypto import hash_items, sign_with_private_key
-from odc_server.utils import is_hex
+from odc_server.utils import is_hex, current_epoch_time
 
 
 @app.route("/bok", methods=["GET"])
@@ -69,7 +67,7 @@ def issue_banknotes():
         if amount == 0:
             break
 
-    current_time = datetime.now().strftime("%Y%m%d%H%M%S%f")
+    current_time = current_epoch_time()
     given_banknotes = list()
     for banknote_amount, banknote_count in give_amounts.items():
         banknote_template = {"code": 643, "time": current_time, "amount": banknote_amount}
