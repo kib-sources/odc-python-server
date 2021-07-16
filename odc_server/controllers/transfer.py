@@ -72,5 +72,5 @@ def receive_banknote():
     db.banknotes.update_one({"_id": ObjectId(bnid)},
                             {"$push": {"chains": new_block}})
 
-    return {"code": 200, "magic": magic, "time": time,
+    return {"magic": magic, "time": time,
             "transaction_hash": transaction_hash, "transaction_hash_signed": transaction_hash_signed}

@@ -11,7 +11,7 @@ from odc_server.utils import is_hex, current_epoch_time
 @app.route("/bok", methods=["GET"])
 @swag_from("apidocs/bok.yml")
 def fetch_bok():
-    return {"code": 200, "bok": bok}
+    return {"bok": bok}
 
 
 @app.route("/register-wallet", methods=["POST"])
@@ -33,7 +33,7 @@ def register_wallet():
 
     signed_sok = sign_with_private_key(hash_items([sok]), bpk)
     wid = db.wallets.insert_one({"sok": sok, "sok_signature": signed_sok}).inserted_id
-    return {"code": 200, "wid": str(wid), "sok_signature": signed_sok}
+    return {"wid": str(wid), "sok_signature": signed_sok}
 
 
 @app.route("/issue-banknotes", methods=["POST"])
@@ -100,4 +100,4 @@ def issue_banknotes():
 
             given_banknotes.append(banknote)
 
-    return {"code": 200, "issued_banknotes": given_banknotes}
+    return {"issued_banknotes": given_banknotes}

@@ -48,12 +48,9 @@ responses:
   200:
     description: "Initial block details"
     schema:
-      example: { "code": 200,"magic": "8982716428722891","time": 1626375582,"transaction_hash": "5c3e24fb58e8f0e97c37ab900225d9ebce6b9837f3ad833046d3fd1e8ab51c8d","transaction_hash_signed": "7f845be121e08bf8ec960ca1ee515e9bbbfe3836a569e8d40f8ddeb2575e2cb3a9c9617e260f3fba47a3b864f27fb8d329f407a74790c981b70ce28a8d6fc0d1" }
+      example: { "magic": "8982716428722891","time": 1626375582,"transaction_hash": "5c3e24fb58e8f0e97c37ab900225d9ebce6b9837f3ad833046d3fd1e8ab51c8d","transaction_hash_signed": "7f845be121e08bf8ec960ca1ee515e9bbbfe3836a569e8d40f8ddeb2575e2cb3a9c9617e260f3fba47a3b864f27fb8d329f407a74790c981b70ce28a8d6fc0d1" }
       type: object
       properties:
-        code:
-          type: int
-          description: "Response HTTP code"
         magic:
           type: string
           description: "Random numeric string"
