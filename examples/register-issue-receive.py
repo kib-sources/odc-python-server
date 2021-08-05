@@ -93,4 +93,5 @@ def example():
         print(receive_json)
 
 
-example()
+if __name__ == "__main__":
+    example()
