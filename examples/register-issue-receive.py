@@ -1,8 +1,8 @@
 import requests
 from os import environ
 
-environ["bpk_location"] = "../example_keys/key"
-environ["bok_location"] = "../example_keys/key.pub"
+environ["bpk_location"] = "./bank_keys/key"
+environ["bok_location"] = "./bank_keys/key.pub"
 
 from odc_server.crypto import sign_with_private_key, hash_items
 from odc_server.utils import current_epoch_time, random_numerical_string
