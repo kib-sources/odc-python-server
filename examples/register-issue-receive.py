@@ -60,7 +60,7 @@ def example():
 
     issue_response_json = issue_response.json()
 
-    # Дополнаяем доступные данные
+    # Дополняем доступные данные
     issued_banknotes = issue_response_json["issued_banknotes"]
 
     print(f"Выпущено(-а) {len(issued_banknotes)} банкнот(-а)")
