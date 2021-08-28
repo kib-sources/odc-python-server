@@ -3,7 +3,7 @@ from bson import ObjectId
 from flasgger import swag_from
 from flask import request
 
-from odc_server import app, db, bpk, bok
+from odc_server import app, db, bpk, bok, bin
 from odc_server.crypto import hash_items, sign_with_private_key
 from odc_server.utils import is_hex, current_epoch_time
 
@@ -13,6 +13,12 @@ from odc_server.utils import is_hex, current_epoch_time
 @swag_from("apidocs/bok.yml")
 def fetch_bok():
     return {"bok": bok}
+
+
+@app.route("/credentials", methods=["GET"])
+@swag_from("apidocs/credentials.yml")
+def fetch_credentials():
+    return {"bok": bok, "bin": bin}
 
 
 @app.route("/register-wallet", methods=["POST"])
