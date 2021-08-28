@@ -92,7 +92,7 @@ def issue_banknotes():
     current_time = current_epoch_time()
     given_banknotes = list()
     for banknote_amount, banknote_count in give_amounts.items():
-        banknote_template = {"code": 643, "time": current_time, "amount": banknote_amount}
+        banknote_template = {"code": 643, "time": current_time, "amount": banknote_amount, "bin": bin}
         for _ in range(banknote_count):
             banknote = dict(banknote_template)
 
