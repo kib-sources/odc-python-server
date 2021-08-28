@@ -21,6 +21,11 @@ except:
     print("Failed to read bpk/bok from file", file=sys.stderr)
     sys.exit()
 
+bin = os.getenv("bin")
+if bin is None:
+    print("bin not provided", file=sys.stderr)
+    sys.exit()
+
 mongo_uri = os.getenv("mongo_uri")
 if mongo_uri is None:
     mongo_uri = "mongodb://127.0.0.1:27017"
