@@ -1,5 +1,6 @@
 Request bok
 ---
+deprecated: true
 responses:
   200:
     description: bok

@@ -8,6 +8,7 @@ from odc_server.crypto import hash_items, sign_with_private_key
 from odc_server.utils import is_hex, current_epoch_time
 
 
+# Deprecated
 @app.route("/bok", methods=["GET"])
 @swag_from("apidocs/bok.yml")
 def fetch_bok():
