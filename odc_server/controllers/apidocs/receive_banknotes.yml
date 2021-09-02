@@ -1,0 +1,94 @@
+Receive issued banknotes (Alg. 1)
+---
+parameters:
+  - in: body
+    name: body
+    description: "application/json request body"
+    required: true
+    schema:
+      type: object
+      required:
+        - wid
+        - banknotes
+      properties:
+        wid:
+          type: string
+          example: "60f04db73b4edf034b75ecd0"
+          description: "Wallet ID (24 char hex string)"
+        banknotes:
+          type: array
+          description: "List of all banknotes"
+          items:
+            type: object
+            properties:
+              uuid:
+                type: string
+                example: "TEST_UUID"
+                description: "Unique ID"
+              bnid:
+                type: string
+                example: "60f0759cc54f41eb6c0870f6"
+                description: "Banknote ID (24 char hex string)"
+              time:
+                type: int
+                example: "1626374954"
+                description: "Transaction time, can be at most 60 seconds old on arrival (Unix Epoch time)"
+              otok:
+                type: string
+                example: "-----BEGIN RSA PUBLIC KEY-----\nMEgCQQC5ohEmk4zwb6YdoBrWjkCr/1ZLc729AYc7QC8sabaSLiujiRcd6VwL7drxQJymxN/gHrvHYDU1xxtiuYCk7nF7AgMBAAE=\n-----END RSA PUBLIC KEY-----"
+                description: "otok RSA-Key"
+              otok_signature:
+                type: string
+                example: "3112788d0d6897e0b58ee937d682c0ad397ca812545e5e8e3db7d3b76b7f49c7e5bf8a9768bfd24c877ed36e753781700b56b17d604ae21d9cfcc151f2a3b3e7"
+                description: "otok hash signed with spk (128 char hex string)"
+              transaction_signature:
+                type: string
+                example: "1ae1f4f6e657baa416bd36c89da1123d5215a8f05aadfbda014db79004c6a7bb7218caaf6d6bba3aa9ded0447360cf58817d8dfd76f6ca45f898389e9610e96d"
+                description: "Hash of all transaction params (uuid, otok, bnid, time) signed with spk (128 char hex string)"
+responses:
+  200:
+    description: "Output of Algorithm 1 for all banknotes"
+    schema:
+      example: { "received_banknotes": [ { "bnid": "61312c7a350009fb9400fc05","magic": "9160771605242257","time": 1630613150,"transaction_hash": "a5589a500fa3295b6316170d3854105b0c0806b78e881ee4d3c12db2df90a5bc","transaction_hash_signed": "2aff5a083c06dfc5b18d922cbf1793306fe540fdf4d0ac8b64f12ab2493c2cca64bed05c1f51902fcf59dd9e9c56b116a986e9ac0f9cb6a7383ccfd426bda20a" },{ "bnid": "61312c7a350009fb9400fc06","magic": "9870495079723906","time": 1630613150,"transaction_hash": "bb298847b73b3f97e9fb3e2965b45f0b546e258c8118d271b8ee54afcbec296b","transaction_hash_signed": "5665e065a57f4f7fce195d86de1cf58e2a58b2608d809e847066006af8c7c47c17848141aa288056d90896c87581066086b74fea0f96cd67931daf5e74b19d43" },{ "bnid": "61312c7a350009fb9400fc07","magic": "9196216454611208","time": 1630613150,"transaction_hash": "3d5270626ef8b4258d53d51a7e37d47d4f4f5e38a8c1ce8256301b2dc2d2ccd8","transaction_hash_signed": "4b347e3614bd02d95ac362a1a242c31613999a4f6c8c84c290095e87d09a55a6daabac9ac751da211f70e0284ddc78519d8536f87480873ec1a91523526acacd" } ],"rejected_banknotes": [ { "bnid": "61312c7a350009fb9400fc08","reason": "time should be within [current - 60, current] (Unix Epoch time)" } ] }
+      type: object
+      properties:
+        received_banknotes:
+          type: array
+          description: "List of successfully received banknotes"
+          items:
+            type: object
+            description: "Initial block details"
+            properties:
+              bnid:
+                type: string
+                description: "Banknote ID (24 char hex string)"
+              magic:
+                type: string
+                description: "Random numeric string"
+              time:
+                type: int
+                description: "Transaction time (Unix Epoch time)"
+              transaction_hash:
+                type: string
+                description: "Hash of all transaction params (uuid, otok, bnid, time) (64 char hex string)"
+              transaction_hash_signed:
+                type: string
+                description: "Hash of all transaction params (uuid, otok, bnid, time) signed with bpk (128 char hex string)"
+        rejected_banknotes:
+          type: array
+          description: "List of rejected banknotes"
+          items:
+            type: object
+            description: "Rejection details"
+            properties:
+              bnid:
+                type: string
+                description: "Banknote ID (24 char hex string)"
+              reason:
+                type: string
+                description: "Why banknote was rejected"
+
+  400:
+    description: "When one of the required parameters was not provided or was incorrect"
+    schema:
+      example: { "code": 400, "message": "wid not registered" }
