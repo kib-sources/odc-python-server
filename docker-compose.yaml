@@ -15,6 +15,7 @@ services:
       bind_address: "0.0.0.0"
       bok_location: "./keys/bank_key.pub"
       bpk_location: "./keys/bank_key"
+      bin: "1111"
     ports:
       - "80:5000"
     volumes:

@@ -1,17 +1,24 @@
 import rsa
 from bson import ObjectId
 from flasgger import swag_from
-from flask import request
+from flask import request, redirect
 
-from odc_server import app, db, bpk, bok
+from odc_server import app, db, bpk, bok, bin
 from odc_server.crypto import hash_items, sign_with_private_key
 from odc_server.utils import is_hex, current_epoch_time
 
 
+# Deprecated
 @app.route("/bok", methods=["GET"])
 @swag_from("apidocs/bok.yml")
 def fetch_bok():
-    return {"bok": bok}
+    return redirect("/credentials")
+
+
+@app.route("/credentials", methods=["GET"])
+@swag_from("apidocs/credentials.yml")
+def fetch_credentials():
+    return {"bok": bok, "bin": bin}
 
 
 @app.route("/register-wallet", methods=["POST"])
@@ -85,7 +92,7 @@ def issue_banknotes():
     current_time = current_epoch_time()
     given_banknotes = list()
     for banknote_amount, banknote_count in give_amounts.items():
-        banknote_template = {"code": 643, "time": current_time, "amount": banknote_amount}
+        banknote_template = {"code": 643, "time": current_time, "amount": banknote_amount, "bin": bin}
         for _ in range(banknote_count):
             banknote = dict(banknote_template)
 
