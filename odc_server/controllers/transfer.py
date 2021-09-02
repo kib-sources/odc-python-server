@@ -8,6 +8,7 @@ from odc_server.crypto import hash_items, verify_with_public_key, sign_with_priv
 from odc_server.utils import random_numerical_string, is_hex, verify_time_is_near_current
 
 
+# Deprecated
 @app.route("/receive-banknote", methods=["POST"])
 @swag_from("apidocs/receive_banknote.yml")
 def receive_banknote():
