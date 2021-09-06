@@ -1,6 +1,8 @@
-import requests
 from os import environ
 
+import requests
+
+environ["bin"] = "1111"
 environ["bpk_location"] = "./bank_keys/key"
 environ["bok_location"] = "./bank_keys/key.pub"
 
@@ -66,6 +68,7 @@ def example():
     print(f"Выпущено(-а) {len(issued_banknotes)} банкнот(-а)")
 
     # Регистрируем каждую выпущенную банкноту
+    banknote_initial_chains = list()
     for i, banknote in enumerate(issued_banknotes):
         # Идентификатор банкноты
         bnid = banknote["bnid"]
@@ -81,16 +84,27 @@ def example():
         transaction_signature = sign_with_private_key(transaction_hash, spk)
 
         banknote_initial_chain = {"bnid": bnid, "otok": otok, "wid": wid, "time": current_time, "uuid": uuid,
-                                  "otok_signature": otok_signature, "transaction_signature": transaction_signature, }
-        receive_response = requests.post("http://127.0.0.1:5000/receive-banknote", json=banknote_initial_chain)
-        receive_code = receive_response.status_code
+                                  "otok_signature": otok_signature, "transaction_signature": transaction_signature}
+        banknote_initial_chains.append(banknote_initial_chain)
 
-        if receive_code != 200:
-            print(f"Не удалось получить банкноту №{i + 1}")
+    receive_response = requests.post("http://127.0.0.1:5000/receive-banknotes",
+                                     json={"wid": wid, "banknotes": banknote_initial_chains})
+    receive_code = receive_response.status_code
 
-        receive_json = receive_response.json()
-        print(f"Получена банкнота №{i + 1}")
-        print(receive_json)
+    if receive_code != 200:
+        print("Не удалось получить банкноты")
+        return
+
+    print("Данные полученных банкнот")
+    receive_json = receive_response.json()
+    for received_banknote_details in receive_json["received_banknotes"]:
+        print(received_banknote_details)
+
+    rejected_banknotes = receive_json["rejected_banknotes"]
+    if len(rejected_banknotes) != 0:
+        print("Ошибка при получении банкнот(-ы)")
+        for rejected_banknote_details in rejected_banknotes:
+            print(rejected_banknote_details)
 
 
 if __name__ == "__main__":

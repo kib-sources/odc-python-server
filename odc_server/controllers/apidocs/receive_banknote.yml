@@ -1,5 +1,6 @@
 Receive issued banknote (Alg. 1)
 ---
+deprecated: true
 parameters:
   - in: body
     name: body
